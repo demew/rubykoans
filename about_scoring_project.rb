@@ -30,8 +30,31 @@ require File.expand_path(File.dirname(__FILE__) + '/edgecase')
 # Your goal is to write the score method.
 
 def score(dice)
-  # You need to write this method
+  # This could be accomplished more easily with the Set class, but I suspect that
+  # isn't the point of the exercise (ho hum)
+
+  return 0 if dice.empty?
+  score = 0
+
+  # Check for sets of three
+  for num in 1..6 do
+    if dice.count(num) >= 3
+      if num == 1
+        score += 1000
+      else
+        score += (100 * num)
+      end
+      for i in 1..3 do dice.delete_at(dice.index(num)) end
+    end
+  end 
+
+  # Check for the remainders
+  score = score + (dice.count(5) * 50)
+  score = score + (dice.count(1) * 100) 
+
+  return score
 end
+
 
 class AboutScoringProject < EdgeCase::Koan
   def test_score_of_an_empty_list_is_zero
